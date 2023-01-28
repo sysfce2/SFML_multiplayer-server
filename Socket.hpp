@@ -14,5 +14,5 @@ private:
 	Socket::Idx idx;
 	Socket::Pointer& sfTcpSocket;
 public:
-	Socket::Idx getIdx();
+	Socket::Idx getIdx() {  };
 };
