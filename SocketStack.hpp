@@ -1,23 +1,26 @@
 #pragma once
 #include <map>
 #include <mutex>
-#include <memory>
 #include <thread>
 #include <iostream>
+#include <unordered_map>
 #include <condition_variable>
-#include <SFML/Network.hpp>
+#include "Socket.hpp"
+
+class ConnectionListener;
 
 class SocketStack {
 public:
-	typedef std::unique_ptr<sf::TcpSocket> SocketPointer;
-
 	SocketStack(const int maxSockets);
 private:
 	const int maxSockets;
-	std::vector<SocketPointer> sockets;
+	std::vector<Socket::Pointer> sockets;
 public:
-	void sendToSocket(int socketIdx, sf::Packet packet);
+	void sendTo(Socket::Idx socketIdx, sf::Packet packet, ConnectionListener& listener);
 	
 	int maxSize() { return maxSockets; }
-	std::vector<SocketPointer>& getSockets() { return sockets; }
+	int getSocketIdx(Socket::Pointer& socket);
+	Socket::Pointer& getSocket(int idx) { return sockets[idx]; }
+
+	std::vector<Socket::Pointer>& getSockets() { return sockets; }
 };

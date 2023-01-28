@@ -19,7 +19,7 @@ void ConnectionListener::start() {
 
 	// this thread is used to listen for connections
 	// without blocking the rest of the program
-	std::thread t(&ConnectionListener::listen);
+	std::thread t(&ConnectionListener::listen, this);
 
 	// start thread
 	t.detach();
@@ -28,8 +28,8 @@ void ConnectionListener::start() {
 void ConnectionListener::listen() {
 	while(shouldListen) {
 		// poll events:
-		// - connection by client,	handled using listener.accept
 		// - packet received,		handled using socket.receive
+		// - connection by client,	handled using listener.accept
 		if(selector.wait()) {
 			// reset flags
 			canSendPackets = false;
@@ -39,29 +39,10 @@ void ConnectionListener::listen() {
 			// get ownership of sockets vector
 			std::lock_guard<std::mutex> lock(m);
 			// get sockets from socketStack
-			std::vector<SocketStack::SocketPointer>& sockets = socketStack.getSockets();
-
-			// if the listener is ready for a connection, accept it
-			if(selector.isReady(listener)) {
-				// create socket
-				SocketStack::SocketPointer socket = std::make_unique<sf::TcpSocket>();
-				// accept the incoming connection and assign it to the newly created socket
-				listener.accept(*socket);
-				// if we have reached our maximum capacity, immediately disconnect our new socket
-				if(sockets.size() == socketStack.maxSize()) {
-					std::cout << "Maximum number of sockets has been reached. Aborting new connection." << std::endl;
-					socket->disconnect();
-					return;
-				}
-				// store our new socket
-				sockets.push_back(std::move(socket));
-				// change flag required by condition variable in other thread
-				hasAcceptedNewConnection = true;
-				std::cout << "A new connection has been stored correctly" << std::endl;
-			}
+			std::vector<Socket::Pointer>& sockets = socketStack.getSockets();
 
 			// if a socket has sent a packet, receive it
-			for(SocketStack::SocketPointer& socket : sockets)
+			for(Socket::Pointer& socket : sockets)
 				if(selector.isReady(*socket)) {
 					// create packet to store
 					sf::Packet p;
@@ -72,6 +53,26 @@ void ConnectionListener::listen() {
 					// change flag required by condition variable in other thread
 					hasReceivedNewPacket = true;
 				}
+
+			// if the listener is ready for a connection, accept it
+			if(selector.isReady(listener)) {
+				// create socket
+				Socket::Pointer socket = std::make_unique<sf::TcpSocket>();
+				// accept the incoming connection and assign it to the newly created socket
+				listener.accept(*socket);
+				// if we have reached our maximum capacity, immediately disconnect our new socket
+				if(sockets.size() >= socketStack.maxSize()) {
+					std::cout << "Maximum number of sockets has been reached. Aborting new connection." << std::endl;
+					socket->disconnect();
+				} else {
+					// store our new socket
+					sockets.push_back(std::move(socket));
+					// change flag required by condition variable in other thread
+					hasAcceptedNewConnection = true;
+					std::cout << "A new connection has been stored correctly" << std::endl;
+				}
+			}
+
 
 			// change flag required by condition variable in other thread
 			canSendPackets = true;
@@ -88,4 +89,31 @@ void ConnectionListener::listen() {
 		// recursively call this function otherwise the thread will die as "isWorking" is set to false
 		listen();
 	}
+}
+
+bool ConnectionListener::wait(Event event) {
+	// wait for a specific event
+	std::unique_lock<std::mutex> lock(m);
+
+	switch(event) {
+		case Event::CAN_SEND_PACKET:
+			cv.wait(lock, [this] { return canSendPackets; });
+			break;
+
+		case Event::NEW_PACKET:
+			cv.wait(lock, [this] { return hasReceivedNewPacket; });
+			break;
+
+		case Event::NEW_CONNECTION:
+			cv.wait(lock, [this] { return hasAcceptedNewConnection; });
+			break;
+
+		default:
+			// something went wrong
+			lock.unlock();
+			std::cout << "ConnectionListener tried waiting for unknown event." << std::endl;
+			return false;
+	}
+
+	return true;
 }

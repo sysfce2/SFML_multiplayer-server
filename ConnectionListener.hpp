@@ -2,11 +2,12 @@
 #include <mutex>
 #include <thread>
 #include <atomic>
-#include <SFML/Network.hpp>
 #include "SocketStack.hpp"
 
 class ConnectionListener {
 public:
+	enum Event { NEW_PACKET, CAN_SEND_PACKET, NEW_CONNECTION };
+
 	ConnectionListener(SocketStack& socketStack, const int port);
 private:
 	const int port;
@@ -16,7 +17,6 @@ private:
 	std::atomic_bool shouldEnd;
 	std::atomic_bool shouldListen;
 
-	// read: https://stackoverflow.com/questions/7555321/why-to-pass-mutex-as-a-parameter-to-a-function-being-called-by-a-thread
 	std::mutex m;
 	std::condition_variable cv;
 
@@ -27,9 +27,12 @@ private:
 	sf::TcpListener listener;
 	sf::SocketSelector selector;
 
-	std::map<SocketStack::SocketPointer, sf::Packet> incomingPackets;
+	// int: socket's idx
+	std::map<Socket::Idx, sf::Packet> incomingPackets;
 public:
 	void start();
+
+	bool wait(Event event);
 private:
 	void listen();
 };
