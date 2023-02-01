@@ -8,7 +8,13 @@ ConnectionListener listener(connections, 39964);
 
 int main() {
 
+	listener.start();
+
 	while(true) {
+
+		if(listener.wait(::)) {
+
+		}
 
 	}
 

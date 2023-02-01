@@ -141,12 +141,16 @@
   <ItemGroup>
     <ClCompile Include="ConnectionListener.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Observer.cpp" />
     <ClCompile Include="SocketStack.cpp" />
+    <ClCompile Include="Subject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConnectionListener.hpp" />
+    <ClInclude Include="Observer.hpp" />
     <ClInclude Include="Socket.hpp" />
     <ClInclude Include="SocketStack.hpp" />
+    <ClInclude Include="Subject.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

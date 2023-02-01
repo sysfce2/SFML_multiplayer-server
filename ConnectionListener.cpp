@@ -11,7 +11,7 @@ ConnectionListener::ConnectionListener(SocketStack& socketStack, const int port)
 
 	// add listener to selector
 	selector.add(listener);
-	std::cout << "Correctly setup listener on port " << port << ". Waiting..." << std::endl;
+	std::cout << "Correctly setup listener on port " << port << ". Waiting to start..." << std::endl;
 }
 
 void ConnectionListener::start() {
@@ -27,18 +27,20 @@ void ConnectionListener::start() {
 
 void ConnectionListener::listen() {
 	while(shouldListen) {
-		// poll events:
-		// - packet received,		handled using socket.receive
-		// - connection by client,	handled using listener.accept
+		// listen for these events:
+		// - incoming connection
+		// - incoming packet from connection
 		if(selector.wait()) {
-			// reset flags
-			canSendPackets = false;
+			// get ownership of mutex
+			std::lock_guard<std::mutex> lock(m);
+
+			// reset events
+			// these must be reset after we've taken ownership of the mutex
 			hasReceivedNewPacket = false;
 			hasAcceptedNewConnection = false;
+			// ---
 
-			// get ownership of sockets vector
-			std::lock_guard<std::mutex> lock(m);
-			// get sockets from socketStack
+			// get sockets
 			std::vector<Socket::Pointer>& sockets = socketStack.getSockets();
 
 			// if a socket has sent a packet, receive it
@@ -48,8 +50,10 @@ void ConnectionListener::listen() {
 					sf::Packet p;
 					// receive from socket
 					socket->receive(p);
+					// get socket idx from socket stack
+					Socket::Idx idx = socketStack.getSocketIdx(socket);
 					// store packet in incomingPackets
-					incomingPackets.emplace(socket, p);
+					incomingPackets.emplace(idx, p);
 					// change flag required by condition variable in other thread
 					hasReceivedNewPacket = true;
 				}
@@ -74,46 +78,66 @@ void ConnectionListener::listen() {
 			}
 
 
-			// change flag required by condition variable in other thread
-			canSendPackets = true;
+			// set capabilities to allow wake-up of condition variables from the other thread
+			canCvsWakeUp = true;
 		}
 
-		// notify all waiting thread that they can ready from the vectors
-		cv.notify_all();
+		// notify condition variables from other threads
+		// KEEP THIS IN AN OUTER-SCOPE RELATIVE TO LOCK_GUARD!
+		// we have to notify only after the lock has been released
+		// see condition_variable#notify_one on cppreference
+		cv.notify_one();
 	}
 
 	if(!shouldEnd) {
-		// if we're here, it means that this SocketStack was paused
+		// the thread has been paused
 		// wait some time to reduce cpu usage
 		std::this_thread::sleep_for(std::chrono::seconds(3));
-		// recursively call this function otherwise the thread will die as "isWorking" is set to false
+		// recursively call this function otherwise the thread will die
 		listen();
 	}
 }
 
-bool ConnectionListener::wait(Event event) {
+/*
+	blocks current thread until a specified event is met
+*/
+// MAYBE USE EVENT BUS
+bool ConnectionListener::wait(NetworkEvent event) {
 	// wait for a specific event
 	std::unique_lock<std::mutex> lock(m);
 
 	switch(event) {
-		case Event::CAN_SEND_PACKET:
-			cv.wait(lock, [this] { return canSendPackets; });
-			break;
+		case NetworkEvent::CAN_SEND_PACKET:
+			cv.wait(lock, [this] { return canCvsWakeUp; });
+			return true;
 
-		case Event::NEW_PACKET:
-			cv.wait(lock, [this] { return hasReceivedNewPacket; });
-			break;
+		case NetworkEvent::NEW_PACKET:
+			cv.wait(lock, [this] { return canCvsWakeUp; });
+			return hasReceivedNewPacket;
 
-		case Event::NEW_CONNECTION:
-			cv.wait(lock, [this] { return hasAcceptedNewConnection; });
-			break;
+		case NetworkEvent::NEW_CONNECTION:
+			cv.wait(lock, [this] { return canCvsWakeUp; });
+			return hasAcceptedNewConnection;
 
 		default:
-			// something went wrong
-			lock.unlock();
 			std::cout << "ConnectionListener tried waiting for unknown event." << std::endl;
 			return false;
 	}
 
-	return true;
+	// Manual unlocking is done before notifying, to avoid waking up
+	// the waiting thread only to block again (see notify_one for details)
+	lock.unlock();
+	cv.notify_one();
+
+	// TODO VERY IMPORTANT
+	// this won't currently work
+	// il motivo per cui non funzionerebbe è perchè usando un if con questa funzione di wait
+	// la funzione ritorna true solo dopo che ha già ceduto il mutex all'altro thread, quindi
+	// non ha alcun senso bloccare il thread visto che aspettiamo solo di ritornare l'evento
+	// che ci serve senza aspettare la funzione che viene specificata dal programmatore.
+	// una possibile soluzione potrebbe essere di create una funziona che sblocca il lock e notifica
+	// la condition variable. Questo ha come lato negativo che il programmatore dovrà per forza
+	// utilizzare questa funzione alla fine della sua, altrimenti il lock non viene mai rilasciato
+	// e il listen non continuerà, bloccando fondamentalmente il server.
+	return false;
 }

@@ -8,7 +8,7 @@ SocketStack::SocketStack(const int maxSockets) : maxSockets(maxSockets) {
 };
 
 void SocketStack::sendTo(Socket::Idx socketIdx, sf::Packet packet, ConnectionListener& listener) {
-	if(listener.wait(ConnectionListener::CAN_SEND_PACKET)) {
+	if(listener.wait(NetworkEvent::CAN_SEND_PACKET)) {
 		Socket::Pointer& socket = getSocket(socketIdx);
 		socket->send(packet);
 	}

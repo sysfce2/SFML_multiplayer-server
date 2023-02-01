@@ -4,35 +4,38 @@
 #include <atomic>
 #include "SocketStack.hpp"
 
+enum NetworkEvent { NEW_PACKET, NEW_CONNECTION, CAN_SEND_PACKET };
+
 class ConnectionListener {
 public:
-	enum Event { NEW_PACKET, CAN_SEND_PACKET, NEW_CONNECTION };
-
 	ConnectionListener(SocketStack& socketStack, const int port);
 private:
 	const int port;
 	SocketStack& socketStack;
 
 	// thread-related flags
-	std::atomic_bool shouldEnd;
-	std::atomic_bool shouldListen;
+	std::atomic_bool shouldEnd		= false;
+	std::atomic_bool shouldListen	= true;
 
 	std::mutex m;
 	std::condition_variable cv;
 
-	bool canSendPackets;
-	bool hasReceivedNewPacket;
-	bool hasAcceptedNewConnection;
+	// this flag is used to signal that a listen cycle has ended, and that the mutex has been released
+	// this means that the other thread can take ownership, and that the condition variables can be awaken
+	bool canCvsWakeUp				= false;
+
+	// events
+	bool hasReceivedNewPacket		= false;
+	bool hasAcceptedNewConnection	= false;
 
 	sf::TcpListener listener;
 	sf::SocketSelector selector;
 
-	// int: socket's idx
 	std::map<Socket::Idx, sf::Packet> incomingPackets;
 public:
 	void start();
 
-	bool wait(Event event);
+	bool wait(NetworkEvent event);
 private:
 	void listen();
 };
