@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\events">
+      <UniqueIdentifier>{328b295c-b1d6-466b-b1d6-9dff6ad928cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\observers">
+      <UniqueIdentifier>{543071b8-daf6-4102-8455-c5bee3152da8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\observers">
+      <UniqueIdentifier>{32817656-cb84-4ad8-a78f-fd756dec1dca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,11 +33,11 @@
     <ClCompile Include="ConnectionListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Subject.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="PacketObserver.cpp">
+      <Filter>Source Files\observers</Filter>
     </ClCompile>
-    <ClCompile Include="Observer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ConnectionObserver.cpp">
+      <Filter>Source Files\observers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,8 +53,23 @@
     <ClInclude Include="Subject.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Observer.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="IEvent.hpp">
+      <Filter>Header Files\events</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketEvent.hpp">
+      <Filter>Header Files\events</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectionEvent.hpp">
+      <Filter>Header Files\events</Filter>
+    </ClInclude>
+    <ClInclude Include="IObserver.hpp">
+      <Filter>Header Files\observers</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketObserver.hpp">
+      <Filter>Header Files\observers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectionObserver.hpp">
+      <Filter>Header Files\observers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

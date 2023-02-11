@@ -16,8 +16,6 @@ private:
 	const int maxSockets;
 	std::vector<Socket::Pointer> sockets;
 public:
-	void sendTo(Socket::Idx socketIdx, sf::Packet packet, ConnectionListener& listener);
-	
 	int maxSize() { return maxSockets; }
 	int getSocketIdx(Socket::Pointer& socket);
 	Socket::Pointer& getSocket(int idx) { return sockets[idx]; }
