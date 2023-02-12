@@ -9,6 +9,3 @@ Ecco le regole da seguire:
 	- private functions
 - le interfacce (classi che implementano almeno una funzione pure virtual) devono avere
 	il nome che inizia con una I (i maiuscola)
-
-TODO: refactor tutto
-togliamo anche gli include inutili

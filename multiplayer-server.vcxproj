@@ -110,13 +110,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Libraries\SFML-2.5.1\include;D:\Libraries\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Libraries\SFML-2.5.1\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system-d.lib;sfml-network-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Libraries\spdlog\lib;D:\Libraries\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-network-d.lib;spdlogd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,34 +127,38 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Libraries\SFML-2.5.1\include;D:\Libraries\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Libraries\SFML-2.5.1\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system.lib;sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Libraries\spdlog\lib;D:\Libraries\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system.lib;sfml-network.lib;spdlogd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ConnectionListener.cpp" />
     <ClCompile Include="ConnectionObserver.cpp" />
+    <ClCompile Include="HeartbeatPacket.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketObserver.cpp" />
+    <ClCompile Include="SocketWrapper.cpp" />
     <ClCompile Include="SocketStack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConnectionEvent.hpp" />
     <ClInclude Include="ConnectionListener.hpp" />
     <ClInclude Include="ConnectionObserver.hpp" />
+    <ClInclude Include="HeartbeatPacket.hpp" />
     <ClInclude Include="IEvent.hpp" />
     <ClInclude Include="IObserver.hpp" />
+    <ClInclude Include="IPacket.hpp" />
     <ClInclude Include="PacketEvent.hpp" />
     <ClInclude Include="PacketObserver.hpp" />
     <ClInclude Include="Subject.hpp" />
-    <ClInclude Include="Socket.hpp" />
+    <ClInclude Include="SocketWrapper.hpp" />
     <ClInclude Include="SocketStack.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

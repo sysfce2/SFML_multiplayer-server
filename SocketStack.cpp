@@ -7,10 +7,8 @@ SocketStack::SocketStack(const int maxSockets) : maxSockets(maxSockets) {
 	sockets.reserve(maxSockets);
 };
 
-int SocketStack::getSocketIdx(Socket::Pointer& socket) {
-	for(int i = 0; i < sockets.size(); i++) {
-		if(sockets[i] == socket) return i;
-	}
-
-	return -1;
+SocketWrapper& SocketStack::getSocketWrapper(SocketWrapper::Idx idx) {
+	for(auto& socket : sockets)
+		if(socket.getIdx() == idx)
+			return socket;
 }

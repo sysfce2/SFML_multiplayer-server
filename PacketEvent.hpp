@@ -1,18 +1,18 @@
 #pragma once
 
 #include "IEvent.hpp"
-#include "Socket.hpp"
+#include "SocketWrapper.hpp"
 
 class PacketEvent : public IEvent {
 private:
 	sf::Packet packet;
-	Socket::Pointer& socket;
+	SocketWrapper& socket;
 public:
-	PacketEvent(sf::Packet packet, Socket::Pointer& socket)
+	PacketEvent(sf::Packet packet, SocketWrapper& socket)
 		: packet(packet), socket(socket)  {}
 
-	sf::Packet& getPacket()			{ return packet; }
-	Socket::Pointer& getSocket()	{ return socket; }
+	sf::Packet& getPacket()	{ return packet; }
+	SocketWrapper& getSocket() { return socket; }
 
 	EventType getType() const override { return PACKET; }
 };

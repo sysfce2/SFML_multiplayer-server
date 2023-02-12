@@ -1,24 +1,18 @@
 #pragma once
-#include <map>
-#include <mutex>
-#include <thread>
-#include <iostream>
-#include <unordered_map>
-#include <condition_variable>
-#include "Socket.hpp"
+#include <vector>
+#include "SocketWrapper.hpp"
 
 class ConnectionListener;
 
 class SocketStack {
 private:
 	const int maxSockets;
-	std::vector<Socket::Pointer> sockets;
+	std::vector<SocketWrapper> sockets;
 public:
 	SocketStack(const int maxSockets);
 
 	int maxSize() { return maxSockets; }
-	int getSocketIdx(Socket::Pointer& socket);
-	Socket::Pointer& getSocket(int idx) { return sockets[idx]; }
+	SocketWrapper& getSocketWrapper(SocketWrapper::Idx idx);
 
-	std::vector<Socket::Pointer>& getSockets() { return sockets; }
+	auto& getSockets() { return sockets; }
 };

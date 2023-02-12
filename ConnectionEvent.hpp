@@ -1,16 +1,16 @@
 #pragma once
 
 #include "IEvent.hpp"
-#include "Socket.hpp"
+#include "SocketWrapper.hpp"
 
 class ConnectionEvent : public IEvent {
 private:
-	Socket::Pointer& socket;
+	SocketWrapper& socket;
 public:
-	ConnectionEvent(Socket::Pointer& socket)
+	ConnectionEvent(SocketWrapper& socket)
 		: socket(socket) {}
 
-	Socket::Pointer& getSocket() { return socket; }
+	SocketWrapper& getSocket() { return socket; }
 
 	EventType getType() const override { return CONNECTION; }
 };

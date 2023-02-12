@@ -22,6 +22,12 @@
     <Filter Include="Source Files\observers">
       <UniqueIdentifier>{32817656-cb84-4ad8-a78f-fd756dec1dca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\packets">
+      <UniqueIdentifier>{92f89d4a-9c0e-42b8-9a18-14f4a16b8fc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\packets">
+      <UniqueIdentifier>{4c78466a-7544-43bb-bd89-27863d865b34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,15 +45,18 @@
     <ClCompile Include="ConnectionObserver.cpp">
       <Filter>Source Files\observers</Filter>
     </ClCompile>
+    <ClCompile Include="HeartbeatPacket.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SocketStack.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConnectionListener.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Socket.hpp">
+    <ClInclude Include="SocketWrapper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Subject.hpp">
@@ -70,6 +79,15 @@
     </ClInclude>
     <ClInclude Include="ConnectionObserver.hpp">
       <Filter>Header Files\observers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectionListener.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HeartbeatPacket.hpp">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="IPacket.hpp">
+      <Filter>Header Files\packets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
