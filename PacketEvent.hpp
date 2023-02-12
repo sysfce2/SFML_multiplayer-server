@@ -5,14 +5,14 @@
 
 class PacketEvent : public IEvent {
 private:
-	sf::Packet m_Packet;
-	Socket::Pointer& m_Socket;
+	sf::Packet packet;
+	Socket::Pointer& socket;
 public:
 	PacketEvent(sf::Packet packet, Socket::Pointer& socket)
-		: m_Packet(packet), m_Socket(socket)  {}
+		: packet(packet), socket(socket)  {}
 
-	sf::Packet& getPacket()			{ return m_Packet; }
-	Socket::Pointer& getSocket()	{ return m_Socket; }
+	sf::Packet& getPacket()			{ return packet; }
+	Socket::Pointer& getSocket()	{ return socket; }
 
 	EventType getType() const override { return PACKET; }
 };

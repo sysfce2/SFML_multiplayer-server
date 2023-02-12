@@ -7,6 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multiplayer-server", "multi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multiplayer-zelda-clone", "..\multiplayer-zelda-clone\multiplayer-zelda-clone.vcxproj", "{50061F0B-4F15-471A-B887-E422F40603FC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B2BD8EF7-78AB-4977-94B5-7674A7FEDA43}"
+	ProjectSection(SolutionItems) = preProject
+		code-style.txt = code-style.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

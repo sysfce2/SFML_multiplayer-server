@@ -3,8 +3,6 @@
 #include "SocketStack.hpp"
 
 class ConnectionListener {
-public:
-	ConnectionListener(SocketStack& socketStack, Subject& subject, const int port);
 private:
 	const int port;
 	Subject& subject;
@@ -13,5 +11,7 @@ private:
 	sf::TcpListener tcpListener;
 	sf::SocketSelector selector;
 public:
+	ConnectionListener(SocketStack& socketStack, Subject& subject, const int port);
+
 	void poll();
 };

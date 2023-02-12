@@ -5,12 +5,12 @@
 
 class ConnectionEvent : public IEvent {
 private:
-	Socket::Pointer& m_Socket;
+	Socket::Pointer& socket;
 public:
 	ConnectionEvent(Socket::Pointer& socket)
-		: m_Socket(socket) {}
+		: socket(socket) {}
 
-	Socket::Pointer& getSocket() { return m_Socket; }
+	Socket::Pointer& getSocket() { return socket; }
 
 	EventType getType() const override { return CONNECTION; }
 };

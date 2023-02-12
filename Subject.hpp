@@ -6,6 +6,8 @@
 #include "IObserver.hpp"
 
 class Subject {
+private:
+	std::list<IObserver::Pointer> observers;
 public:
 	/*
 		This function instantiates a new event of type EventT and
@@ -25,6 +27,4 @@ public:
 	void attach() { observers.push_back(std::make_unique<ObserverT>()); }
 
 	void detachAll() { observers.clear(); }
-private:
-	std::list<IObserver::Pointer> observers;
 };

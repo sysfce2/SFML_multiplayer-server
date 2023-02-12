@@ -10,12 +10,12 @@
 class ConnectionListener;
 
 class SocketStack {
-public:
-	SocketStack(const int maxSockets);
 private:
 	const int maxSockets;
 	std::vector<Socket::Pointer> sockets;
 public:
+	SocketStack(const int maxSockets);
+
 	int maxSize() { return maxSockets; }
 	int getSocketIdx(Socket::Pointer& socket);
 	Socket::Pointer& getSocket(int idx) { return sockets[idx]; }
