@@ -13,20 +13,20 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\observers">
+      <UniqueIdentifier>{32817656-cb84-4ad8-a78f-fd756dec1dca}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\events">
       <UniqueIdentifier>{328b295c-b1d6-466b-b1d6-9dff6ad928cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\observers">
       <UniqueIdentifier>{543071b8-daf6-4102-8455-c5bee3152da8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\observers">
-      <UniqueIdentifier>{32817656-cb84-4ad8-a78f-fd756dec1dca}</UniqueIdentifier>
+    <Filter Include="Header Files\packet-listeners">
+      <UniqueIdentifier>{5ad6eac4-9f57-4fc6-8920-8f8520862b88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\packets">
-      <UniqueIdentifier>{92f89d4a-9c0e-42b8-9a18-14f4a16b8fc7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\packets">
-      <UniqueIdentifier>{4c78466a-7544-43bb-bd89-27863d865b34}</UniqueIdentifier>
+    <Filter Include="Source Files\packet-listeners">
+      <UniqueIdentifier>{892838b8-80b5-4a9a-9659-64d2aa13f992}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,11 +45,14 @@
     <ClCompile Include="ConnectionObserver.cpp">
       <Filter>Source Files\observers</Filter>
     </ClCompile>
-    <ClCompile Include="HeartbeatPacket.cpp">
-      <Filter>Source Files\packets</Filter>
-    </ClCompile>
     <ClCompile Include="SocketWrapper.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HeartbeatListener.cpp">
+      <Filter>Source Files\packet-listeners</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,11 +86,17 @@
     <ClInclude Include="ConnectionListener.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HeartbeatPacket.hpp">
-      <Filter>Header Files\packets</Filter>
+    <ClInclude Include="Packets.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IPacket.hpp">
-      <Filter>Header Files\packets</Filter>
+    <ClInclude Include="PacketType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPacketListener.hpp">
+      <Filter>Header Files\packet-listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="HeartbeatListener.hpp">
+      <Filter>Header Files\packet-listeners</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

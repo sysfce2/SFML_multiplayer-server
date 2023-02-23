@@ -6,13 +6,20 @@ class ConnectionListener;
 
 class SocketStack {
 private:
-	const int maxSockets;
-	std::vector<SocketWrapper> sockets;
-public:
-	SocketStack(const int maxSockets);
+	using SocketWrapperV = std::vector<SocketWrapper>;
 
-	int maxSize() { return maxSockets; }
-	SocketWrapper& getSocketWrapper(SocketWrapper::Idx idx);
+	SocketWrapperV sockets;
+	const size_t maxSockets;
+public:
+	SocketStack(const size_t maxSockets);
+
+	size_t size() { return sockets.size(); }
+	size_t maxSize() { return maxSockets; }
+
+	void add(SocketWrapper&& socket);
+	void remove(SocketWrapper::ID id);
 
 	auto& getSockets() { return sockets; }
+
+	SocketWrapper& getSocketWrapper(SocketWrapper::ID id);
 };

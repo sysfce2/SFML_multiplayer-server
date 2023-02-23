@@ -22,13 +22,10 @@ void ConnectionListener::poll() {
 	// - incoming connection
 	// - incoming packet from connection
 	if(selector.wait(sf::seconds(0.017f))) {
-		// get sockets
-		auto& sockets = socketStack.getSockets();
-
 		// if the listener is ready for a connection, accept it
 		if(selector.isReady(tcpListener)) {
 			// reject new connection if we've reached our maximum number of sockets in the socketStack
-			if(sockets.size() >= socketStack.maxSize()) {
+			if(socketStack.size() >= socketStack.maxSize()) {
 				// broadcast
 				spdlog::warn("Maximum number of sockets has been reached. Aborting new connection.");
 			} else {
@@ -46,26 +43,38 @@ void ConnectionListener::poll() {
 				// notify event
 				subject.notify<ConnectionEvent>(socket);
 				// store our new socket
-				sockets.push_back(std::move(socket));
+				socketStack.add(std::move(socket));
 				// broadcast
 				spdlog::info("A new connection has been stored correctly.");
 			}
 		}
 
 		// if a socket has sent a packet, receive it
-		for(SocketWrapper& socket : sockets) {
+		for(SocketWrapper& socket : socketStack.getSockets()) {
 			// get tcpSocket by dereferencing unique_ptr
-			sf::TcpSocket& tcpSocket = *socket.getPtr();
+			sf::TcpSocket& sfSocket = *socket.getPtr();
 
-			if(selector.isReady(tcpSocket)) {
+			if(selector.isReady(sfSocket)) {
 				// create packet to store
 				sf::Packet p;
-				// receive from socket
-				if(tcpSocket.receive(p) == sf::Socket::Done) {
-					// notify event
-					subject.notify<PacketEvent>(p, socket);
-					// broadcast
-					spdlog::info("A new packet has been received.");
+				// handle packet event
+				switch(sfSocket.receive(p)) {
+					case sf::Socket::Done:
+						subject.notify<PacketEvent>(p, socket);
+						spdlog::info("A new packet has been received.");
+						break;
+					case sf::Socket::Disconnected:
+						// remove from selector
+						selector.remove(sfSocket);
+						// disconnect socket
+						sfSocket.disconnect();
+						// remove from socketStack
+						socketStack.remove(socket.getIdx());
+						spdlog::info("A client has disconnected.");
+						break;
+					default:
+						spdlog::error("A packet has been received, but it has an unhandled state!");
+						break;
 				}
 			}
 		}

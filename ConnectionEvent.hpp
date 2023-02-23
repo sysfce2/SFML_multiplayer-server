@@ -10,7 +10,5 @@ public:
 	ConnectionEvent(SocketWrapper& socket)
 		: socket(socket) {}
 
-	SocketWrapper& getSocket() { return socket; }
-
-	EventType getType() const override { return CONNECTION; }
+	SocketWrapper& getSocket() const { return socket; }
 };

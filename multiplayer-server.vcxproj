@@ -55,8 +55,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
+  <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -111,6 +110,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Libraries\SFML-2.5.1\include;D:\Libraries\spdlog\include</AdditionalIncludeDirectories>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +128,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Libraries\SFML-2.5.1\include;D:\Libraries\spdlog\include</AdditionalIncludeDirectories>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,9 +142,10 @@
   <ItemGroup>
     <ClCompile Include="ConnectionListener.cpp" />
     <ClCompile Include="ConnectionObserver.cpp" />
-    <ClCompile Include="HeartbeatPacket.cpp" />
+    <ClCompile Include="HeartbeatListener.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketObserver.cpp" />
+    <ClCompile Include="PacketType.cpp" />
     <ClCompile Include="SocketWrapper.cpp" />
     <ClCompile Include="SocketStack.cpp" />
   </ItemGroup>
@@ -151,12 +153,14 @@
     <ClInclude Include="ConnectionEvent.hpp" />
     <ClInclude Include="ConnectionListener.hpp" />
     <ClInclude Include="ConnectionObserver.hpp" />
-    <ClInclude Include="HeartbeatPacket.hpp" />
+    <ClInclude Include="HeartbeatListener.hpp" />
     <ClInclude Include="IEvent.hpp" />
     <ClInclude Include="IObserver.hpp" />
-    <ClInclude Include="IPacket.hpp" />
     <ClInclude Include="PacketEvent.hpp" />
+    <ClInclude Include="IPacketListener.hpp" />
     <ClInclude Include="PacketObserver.hpp" />
+    <ClInclude Include="Packets.hpp" />
+    <ClInclude Include="PacketType.hpp" />
     <ClInclude Include="Subject.hpp" />
     <ClInclude Include="SocketWrapper.hpp" />
     <ClInclude Include="SocketStack.hpp" />

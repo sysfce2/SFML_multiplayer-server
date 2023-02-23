@@ -2,19 +2,22 @@
 
 #include <memory>
 #include <SFML/Network.hpp>
+#include "Packets.hpp"
 
 class SocketWrapper {
 public:
-	using Idx = sf::Uint32;
+	using ID = sf::Uint32;
 	using Pointer = std::unique_ptr<sf::TcpSocket>;
 private:
-	static Idx socketCount;
+	static ID socketCount;
 
-	SocketWrapper::Idx idx;
+	SocketWrapper::ID id;
 	SocketWrapper::Pointer ptr;
 public:
 	SocketWrapper();
 
+	void send(PacketWrapper& packet);
+
 	auto& getPtr() { return ptr; }
-	SocketWrapper::Idx getIdx() { return idx; }
+	SocketWrapper::ID getIdx() { return id; }
 };
