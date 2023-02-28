@@ -2,7 +2,6 @@
 
 #include <list>
 #include <utility>
-#include "IEvent.hpp"
 #include "IObserver.hpp"
 
 class Subject {
@@ -24,15 +23,5 @@ public:
 		This function attaches a new instance of EventT to the subject
 	*/
 	template<typename ObserverT>
-	auto& attach() {
-		observers.push_back(std::make_unique<ObserverT>());
-
-		auto& lastObserver = observers.back();
-		ObserverT& o = dynamic_cast<ObserverT&>(*(lastObserver.get()));
-
-		return o;
-	}
-
-
-	void detachAll() { observers.clear(); }
+	void attach() { observers.push_back(std::make_unique<ObserverT>()); }
 };

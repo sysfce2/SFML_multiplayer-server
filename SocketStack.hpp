@@ -2,14 +2,10 @@
 #include <vector>
 #include "SocketWrapper.hpp"
 
-class ConnectionListener;
-
 class SocketStack {
 private:
-	using SocketWrapperV = std::vector<SocketWrapper>;
-
-	SocketWrapperV sockets;
 	const size_t maxSockets;
+	std::vector<SocketWrapper> sockets;
 public:
 	SocketStack(const size_t maxSockets);
 

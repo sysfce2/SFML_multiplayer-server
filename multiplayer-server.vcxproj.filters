@@ -86,9 +86,6 @@
     <ClInclude Include="ConnectionListener.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Packets.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PacketType.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

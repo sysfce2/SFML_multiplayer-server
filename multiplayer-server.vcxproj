@@ -159,7 +159,6 @@
     <ClInclude Include="PacketEvent.hpp" />
     <ClInclude Include="IPacketListener.hpp" />
     <ClInclude Include="PacketObserver.hpp" />
-    <ClInclude Include="Packets.hpp" />
     <ClInclude Include="PacketType.hpp" />
     <ClInclude Include="Subject.hpp" />
     <ClInclude Include="SocketWrapper.hpp" />

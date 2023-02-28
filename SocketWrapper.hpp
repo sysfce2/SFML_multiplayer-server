@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <SFML/Network.hpp>
-#include "Packets.hpp"
 
 class SocketWrapper {
 public:
@@ -16,7 +15,7 @@ private:
 public:
 	SocketWrapper();
 
-	void send(PacketWrapper& packet);
+	void send(sf::Packet& packet);
 
 	auto& getPtr() { return ptr; }
 	SocketWrapper::ID getIdx() { return id; }
