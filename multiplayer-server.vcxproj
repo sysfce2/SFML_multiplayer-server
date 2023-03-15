@@ -70,10 +70,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(ProjectDir)build</OutDir>
+    <OutDir>$(ProjectDir)build\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(ProjectDir)build</OutDir>
+    <OutDir>$(ProjectDir)build\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -110,7 +110,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Libraries\SFML-2.5.1\include;D:\Libraries\spdlog\include</AdditionalIncludeDirectories>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,7 +128,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Libraries\SFML-2.5.1\include;D:\Libraries\spdlog\include</AdditionalIncludeDirectories>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,27 +140,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ConnectionListener.cpp" />
-    <ClCompile Include="ConnectionObserver.cpp" />
-    <ClCompile Include="HeartbeatListener.cpp" />
+    <ClCompile Include="NetworkServer.cpp" />
+    <ClCompile Include="EventBus.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PacketObserver.cpp" />
-    <ClCompile Include="PacketType.cpp" />
+    <ClCompile Include="PingListener.cpp" />
     <ClCompile Include="SocketWrapper.cpp" />
     <ClCompile Include="SocketStack.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConnectionEvent.hpp" />
-    <ClInclude Include="ConnectionListener.hpp" />
-    <ClInclude Include="ConnectionObserver.hpp" />
-    <ClInclude Include="HeartbeatListener.hpp" />
-    <ClInclude Include="IEvent.hpp" />
-    <ClInclude Include="IObserver.hpp" />
-    <ClInclude Include="PacketEvent.hpp" />
-    <ClInclude Include="IPacketListener.hpp" />
-    <ClInclude Include="PacketObserver.hpp" />
-    <ClInclude Include="PacketType.hpp" />
-    <ClInclude Include="Subject.hpp" />
+    <ClInclude Include="NetworkServer.hpp" />
+    <ClInclude Include="Events.hpp" />
+    <ClInclude Include="EventBus.hpp" />
+    <ClInclude Include="IEventListener.hpp" />
+    <ClInclude Include="PingListener.hpp" />
     <ClInclude Include="SocketWrapper.hpp" />
     <ClInclude Include="SocketStack.hpp" />
   </ItemGroup>

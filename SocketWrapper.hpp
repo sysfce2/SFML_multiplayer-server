@@ -6,17 +6,15 @@
 class SocketWrapper {
 public:
 	using ID = sf::Uint32;
-	using Pointer = std::unique_ptr<sf::TcpSocket>;
+	using Pointer = std::unique_ptr<SocketWrapper>;
 private:
 	static ID socketCount;
 
+	sf::TcpSocket socket;
 	SocketWrapper::ID id;
-	SocketWrapper::Pointer ptr;
 public:
 	SocketWrapper();
 
-	void send(sf::Packet& packet);
-
-	auto& getPtr() { return ptr; }
-	SocketWrapper::ID getIdx() { return id; }
+	auto& getSocket() { return socket; }
+	SocketWrapper::ID getId() { return id; }
 };

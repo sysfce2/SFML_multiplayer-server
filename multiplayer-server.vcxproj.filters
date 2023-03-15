@@ -13,20 +13,17 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\observers">
-      <UniqueIdentifier>{32817656-cb84-4ad8-a78f-fd756dec1dca}</UniqueIdentifier>
+    <Filter Include="Source Files\events">
+      <UniqueIdentifier>{efd1c0f7-a99a-40db-8dbc-74b03cccbdc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\listeners">
+      <UniqueIdentifier>{706d8cb9-29e2-46bd-b757-0fab782f260b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\events">
-      <UniqueIdentifier>{328b295c-b1d6-466b-b1d6-9dff6ad928cc}</UniqueIdentifier>
+      <UniqueIdentifier>{3a86203a-560c-4d2a-a39a-a7b70f2a4767}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\observers">
-      <UniqueIdentifier>{543071b8-daf6-4102-8455-c5bee3152da8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\packet-listeners">
-      <UniqueIdentifier>{5ad6eac4-9f57-4fc6-8920-8f8520862b88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\packet-listeners">
-      <UniqueIdentifier>{892838b8-80b5-4a9a-9659-64d2aa13f992}</UniqueIdentifier>
+    <Filter Include="Source Files\listeners">
+      <UniqueIdentifier>{3bac6e42-a815-40dc-bc55-a96810c7280b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,23 +33,17 @@
     <ClCompile Include="SocketStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConnectionListener.cpp">
+    <ClCompile Include="NetworkServer.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PacketObserver.cpp">
-      <Filter>Source Files\observers</Filter>
-    </ClCompile>
-    <ClCompile Include="ConnectionObserver.cpp">
-      <Filter>Source Files\observers</Filter>
     </ClCompile>
     <ClCompile Include="SocketWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PacketType.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="EventBus.cpp">
+      <Filter>Source Files\events</Filter>
     </ClCompile>
-    <ClCompile Include="HeartbeatListener.cpp">
-      <Filter>Source Files\packet-listeners</Filter>
+    <ClCompile Include="PingListener.cpp">
+      <Filter>Source Files\listeners</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,38 +53,20 @@
     <ClInclude Include="SocketWrapper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Subject.hpp">
+    <ClInclude Include="NetworkServer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IEvent.hpp">
+    <ClInclude Include="PingListener.hpp">
+      <Filter>Header Files\listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="EventBus.hpp">
       <Filter>Header Files\events</Filter>
     </ClInclude>
-    <ClInclude Include="PacketEvent.hpp">
+    <ClInclude Include="Events.hpp">
       <Filter>Header Files\events</Filter>
     </ClInclude>
-    <ClInclude Include="ConnectionEvent.hpp">
+    <ClInclude Include="IEventListener.hpp">
       <Filter>Header Files\events</Filter>
-    </ClInclude>
-    <ClInclude Include="IObserver.hpp">
-      <Filter>Header Files\observers</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketObserver.hpp">
-      <Filter>Header Files\observers</Filter>
-    </ClInclude>
-    <ClInclude Include="ConnectionObserver.hpp">
-      <Filter>Header Files\observers</Filter>
-    </ClInclude>
-    <ClInclude Include="ConnectionListener.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketType.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IPacketListener.hpp">
-      <Filter>Header Files\packet-listeners</Filter>
-    </ClInclude>
-    <ClInclude Include="HeartbeatListener.hpp">
-      <Filter>Header Files\packet-listeners</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

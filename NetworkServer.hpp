@@ -1,17 +1,17 @@
 #pragma once
-#include "Subject.hpp"
+#include "EventBus.hpp"
 #include "SocketStack.hpp"
 
-class ConnectionListener {
+class NetworkServer {
 private:
 	const int port;
-	Subject& subject;
+	EventBus& bus;
 	SocketStack& socketStack;
 
 	sf::TcpListener tcpListener;
 	sf::SocketSelector selector;
 public:
-	ConnectionListener(SocketStack& socketStack, Subject& subject, const int port);
+	NetworkServer(SocketStack& socketStack, EventBus& bus, const int port);
 
 	void poll();
 };

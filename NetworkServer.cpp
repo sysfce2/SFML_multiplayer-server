@@ -1,11 +1,10 @@
-#include "ConnectionListener.hpp"
+#include "NetworkServer.hpp"
 #include <spdlog/spdlog.h>
-#include "PacketEvent.hpp"
-#include "ConnectionEvent.hpp"
+#include "Events.hpp"
 
 
-ConnectionListener::ConnectionListener(SocketStack& socketStack, Subject& subject, const int port)
-	: port(port), socketStack(socketStack), subject(subject) {
+NetworkServer::NetworkServer(SocketStack& socketStack, EventBus& bus, const int port)
+	: port(port), socketStack(socketStack), bus(bus) {
 	// setup listener
 	if(tcpListener.listen(port) != sf::Socket::Done) {
 		spdlog::error("Cannot listen on port {}: listener is not ready.", port);
@@ -17,7 +16,7 @@ ConnectionListener::ConnectionListener(SocketStack& socketStack, Subject& subjec
 	spdlog::info("Correctly setup listener on port {}.", port);
 }
 
-void ConnectionListener::poll() {
+void NetworkServer::poll() {
 	// listen for these events:
 	// - incoming connection
 	// - incoming packet from connection
@@ -30,9 +29,11 @@ void ConnectionListener::poll() {
 				spdlog::warn("Maximum number of sockets has been reached. Aborting new connection.");
 			} else {
 				// create socket
-				SocketWrapper socket;
+				SocketWrapper::Pointer wrapper = std::make_unique<SocketWrapper>();
+				// get socket id
+				SocketWrapper::ID socketId = wrapper->getId();
 				// get tcpSocket by dereferencing unique_ptr
-				sf::TcpSocket& tcpSocket = *socket.getPtr();
+				sf::TcpSocket& tcpSocket = wrapper->getSocket();
 				// try to accept incoming connection
 				if(tcpListener.accept(tcpSocket) != sf::Socket::Done) {
 					spdlog::error("Something went wrong while trying to accept a new connection!");
@@ -40,19 +41,21 @@ void ConnectionListener::poll() {
 				}
 				// add socket to selector
 				selector.add(tcpSocket);
-				// notify event
-				subject.notify<ConnectionEvent>(socket);
 				// store our new socket
-				socketStack.add(std::move(socket));
+				socketStack.add(std::move(wrapper));
+				// notify event
+				bus.emit<EConnection>(socketId);
 				// broadcast
 				spdlog::info("A new connection has been stored correctly.");
 			}
 		}
 
 		// if a socket has sent a packet, receive it
-		for(SocketWrapper& socket : socketStack.getSockets()) {
+		for(auto& wrapper : socketStack.getWrappers()) {
+			// get id
+			SocketWrapper::ID socketId = wrapper->getId();
 			// get tcpSocket by dereferencing unique_ptr
-			sf::TcpSocket& sfSocket = *socket.getPtr();
+			sf::TcpSocket& sfSocket = wrapper->getSocket();
 
 			if(selector.isReady(sfSocket)) {
 				// create packet to store
@@ -60,7 +63,7 @@ void ConnectionListener::poll() {
 				// handle packet event
 				switch(sfSocket.receive(p)) {
 					case sf::Socket::Done:
-						subject.notify<PacketEvent>(p, socket);
+						bus.emit<EPacketReceived>(p, socketId);
 						spdlog::info("A new packet has been received.");
 						break;
 					case sf::Socket::Disconnected:
@@ -69,7 +72,9 @@ void ConnectionListener::poll() {
 						// disconnect socket
 						sfSocket.disconnect();
 						// remove from socketStack
-						socketStack.remove(socket.getIdx());
+						socketStack.remove(socketId);
+						// broadcast
+						bus.emit<EDisconnection>();
 						spdlog::info("A client has disconnected.");
 						break;
 					default:
