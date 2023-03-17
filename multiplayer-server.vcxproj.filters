@@ -25,18 +25,24 @@
     <Filter Include="Source Files\listeners">
       <UniqueIdentifier>{3bac6e42-a815-40dc-bc55-a96810c7280b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\packets">
+      <UniqueIdentifier>{2c46356c-6a9b-4528-a6a9-c8a759e82398}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\packets">
+      <UniqueIdentifier>{1779ba0d-8a48-4820-a6bd-4dc41a01e540}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SocketStack.cpp">
+    <ClCompile Include="ConnectionStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NetworkServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SocketWrapper.cpp">
+    <ClCompile Include="ClientConnection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EventBus.cpp">
@@ -45,12 +51,18 @@
     <ClCompile Include="PingListener.cpp">
       <Filter>Source Files\listeners</Filter>
     </ClCompile>
+    <ClCompile Include="PacketType.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketProcessor.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SocketStack.hpp">
+    <ClInclude Include="ConnectionStack.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SocketWrapper.hpp">
+    <ClInclude Include="ClientConnection.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NetworkServer.hpp">
@@ -67,6 +79,12 @@
     </ClInclude>
     <ClInclude Include="IEventListener.hpp">
       <Filter>Header Files\events</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketType.hpp">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketProcessor.hpp">
+      <Filter>Header Files\packets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

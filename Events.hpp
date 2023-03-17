@@ -1,17 +1,26 @@
 #pragma once
-#include "SocketWrapper.hpp"
+#include <memory>
+#include "ClientConnection.hpp"
 
-struct EDisconnection {};
-
-struct EConnection {
-	SocketWrapper::ID socketId;
+struct C2SConnection {
+	ClientConnection::ID connectionId;
 };
 
-struct EPacketSent {
-	SocketWrapper::ID socketId;
+struct C2SDisconnection {
+	ClientConnection::ID connectionId;
 };
 
-struct EPacketReceived {
-	sf::Packet packet;
-	SocketWrapper::ID socketId;
+struct S2CPacketPreprocess {
+	sf::Packet& packet;
+	ClientConnection::ID connectionId;
+};
+
+struct C2SPacketPreprocess {
+	ClientConnection::ID connectionId;
+	sf::Packet& packet;
+};
+
+struct C2SPingPacket {
+	ClientConnection::ID connectionId;
+	sf::Packet& packet;
 };
