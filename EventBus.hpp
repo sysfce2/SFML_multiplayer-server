@@ -14,5 +14,9 @@ public:
 			listener->handle(Event(std::forward<Args>(args)...));
 	};
 
-	void registerListener(IEventListener::Pointer listener);
+	template<typename ListenerT>
+	void registerListener() {
+		auto listener = std::make_unique<ListenerT>();
+		listeners.push_back(std::move(listener));
+	}
 };

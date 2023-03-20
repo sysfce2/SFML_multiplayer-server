@@ -20,7 +20,7 @@ void NetworkServer::poll() {
 	// listen for these events:
 	// - incoming connection
 	// - incoming packet from connection
-	if(selector.wait(sf::seconds(0.017f))) {
+	if(selector.wait(sf::seconds(0.016f))) {
 		// if the listener is ready for a connection, accept it
 		if(selector.isReady(tcpListener)) {
 			// reject new connection if we've reached our maximum number of sockets in the socketStack

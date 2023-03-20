@@ -141,7 +141,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="NetworkServer.cpp" />
-    <ClCompile Include="EventBus.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketProcessor.cpp" />
     <ClCompile Include="PacketType.cpp" />

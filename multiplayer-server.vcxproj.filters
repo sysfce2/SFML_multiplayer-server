@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\events">
-      <UniqueIdentifier>{efd1c0f7-a99a-40db-8dbc-74b03cccbdc1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\listeners">
       <UniqueIdentifier>{706d8cb9-29e2-46bd-b757-0fab782f260b}</UniqueIdentifier>
     </Filter>
@@ -44,9 +41,6 @@
     </ClCompile>
     <ClCompile Include="ClientConnection.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EventBus.cpp">
-      <Filter>Source Files\events</Filter>
     </ClCompile>
     <ClCompile Include="PingListener.cpp">
       <Filter>Source Files\listeners</Filter>

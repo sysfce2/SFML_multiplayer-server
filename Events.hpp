@@ -2,6 +2,10 @@
 #include <memory>
 #include "ClientConnection.hpp"
 
+struct S2STick {
+	sf::Time dt;
+};
+
 struct C2SConnection {
 	ClientConnection::ID connectionId;
 };
@@ -11,8 +15,8 @@ struct C2SDisconnection {
 };
 
 struct S2CPacketPreprocess {
-	sf::Packet& packet;
 	ClientConnection::ID connectionId;
+	sf::Packet& packet;
 };
 
 struct C2SPacketPreprocess {
