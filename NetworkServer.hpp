@@ -21,6 +21,9 @@ public:
 
 	void poll();
 
-	// TODO: maybe move this somewhere else
-	void send(ClientConnection::ID id, PacketType type, sf::Packet& p);
+	void sendTo(ClientConnection::ID id, PacketType type, sf::Packet& p);
+	void disconnectClient(ClientConnection::ID id);
+private:
+	void processNewConnections();
+	void processIncomingPackets();
 };

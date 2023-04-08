@@ -5,8 +5,6 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multiplayer-server", "multiplayer-server.vcxproj", "{7685AA38-04E2-45F2-ABD1-61C228D2E10E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multiplayer-zelda-clone", "..\multiplayer-zelda-clone\multiplayer-zelda-clone.vcxproj", "{50061F0B-4F15-471A-B887-E422F40603FC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B2BD8EF7-78AB-4977-94B5-7674A7FEDA43}"
 	ProjectSection(SolutionItems) = preProject
 		code-style.txt = code-style.txt
@@ -28,14 +26,6 @@ Global
 		{7685AA38-04E2-45F2-ABD1-61C228D2E10E}.Release|x64.Build.0 = Release|x64
 		{7685AA38-04E2-45F2-ABD1-61C228D2E10E}.Release|x86.ActiveCfg = Release|Win32
 		{7685AA38-04E2-45F2-ABD1-61C228D2E10E}.Release|x86.Build.0 = Release|Win32
-		{50061F0B-4F15-471A-B887-E422F40603FC}.Debug|x64.ActiveCfg = Debug|x64
-		{50061F0B-4F15-471A-B887-E422F40603FC}.Debug|x64.Build.0 = Debug|x64
-		{50061F0B-4F15-471A-B887-E422F40603FC}.Debug|x86.ActiveCfg = Debug|Win32
-		{50061F0B-4F15-471A-B887-E422F40603FC}.Debug|x86.Build.0 = Debug|Win32
-		{50061F0B-4F15-471A-B887-E422F40603FC}.Release|x64.ActiveCfg = Release|x64
-		{50061F0B-4F15-471A-B887-E422F40603FC}.Release|x64.Build.0 = Release|x64
-		{50061F0B-4F15-471A-B887-E422F40603FC}.Release|x86.ActiveCfg = Release|Win32
-		{50061F0B-4F15-471A-B887-E422F40603FC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

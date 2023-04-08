@@ -1,5 +1,4 @@
 #pragma once
-#include <memory>
 #include "ClientConnection.hpp"
 
 struct S2STick {

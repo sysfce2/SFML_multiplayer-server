@@ -16,7 +16,7 @@ int main() {
 
 	spdlog::set_level(spdlog::level::debug);
 
-	bus.registerListener<PingListener>();
+	bus.registerListener<PingListener>(server);
 
 	sf::Clock clock;
 	while(true) {
