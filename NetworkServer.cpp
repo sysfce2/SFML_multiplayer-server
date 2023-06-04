@@ -1,10 +1,11 @@
 #include "NetworkServer.hpp"
 #include <spdlog/spdlog.h>
 #include "Events.hpp"
+#include "PacketBuilder.hpp"
 
 
-NetworkServer::NetworkServer(ConnectionStack& connectionStack, EventBus& bus, const int port)
-	: port(port), connectionStack(connectionStack), bus(bus), packetProcessor() {
+NetworkServer::NetworkServer(ConnectionStack& connectionStack, const int port)
+	: port(port), connectionStack(connectionStack), packetProcessor() {
 	// setup listener
 	if(tcpListener.listen(port) != sf::Socket::Done) {
 		spdlog::error("Cannot listen on port {}: listener is not ready.", port);
@@ -35,10 +36,10 @@ void NetworkServer::processIncomingPackets() {
 		switch(socket.receive(p)) {
 			case sf::Socket::Done:
 				// first, emit general "packet received" event
-				bus.emit<C2SPacketPreprocess>(connectionId, p);
+				EventBus::emit<C2SPacketPreprocess>(connectionId, p);
 				// then, process the packet and emit correct, specific event
-				packetProcessor.process(p, connectionId, bus);
-				spdlog::info("A new packet has been received.");
+				packetProcessor.process(p, connectionId);
+				spdlog::debug("A new packet has been received.");
 				break;
 
 			case sf::Socket::Disconnected:
@@ -47,7 +48,7 @@ void NetworkServer::processIncomingPackets() {
 				break;
 
 			default:
-				spdlog::error("A packet has been received, but it has an unhandled state!");
+				spdlog::error("A packet has been received, but it has an unhandled SFML state!");
 				break;
 		}
 	}
@@ -58,7 +59,7 @@ void NetworkServer::processNewConnections() {
 		return;
 
 	if(connectionStack.size() >= connectionStack.maxSize()) {
-		spdlog::warn("Maximum number of sockets has been reached. Aborting new connection.");
+		spdlog::warn("Maximum number of sockets has been reached. Closing new connection.");
 		return;
 	}
 
@@ -71,21 +72,50 @@ void NetworkServer::processNewConnections() {
 		return;
 	}
 
-	// handle conncetion
+	// handle connection
 	selector.add(socket);
 	connectionStack.add(std::move(connection));
-	bus.emit<C2SConnection>(connectionId);
+	EventBus::emit<C2SConnection>(connectionId);
 
 	spdlog::info("A new connection has been stored correctly.");
+
+	// broadcast new connection
+	broadcastNewConnection(connectionId);
+	spdlog::debug("Broadcasting new connection to connected clients.");
 }
 
-void NetworkServer::sendTo(ClientConnection::ID id, PacketType type, sf::Packet& p) {
+void NetworkServer::broadcastNewConnection(ClientConnection::ID id) {
+	sf::Packet p = PacketBuilder::build(PacketType::S2C_NEW_CLIENT);
+
+	// TODO implement packet
+
+	broadcastExcept(id, p);
+}
+
+void NetworkServer::send(ClientConnection::ID id, sf::Packet& p) {
 	auto& connection = connectionStack.getConnection(id);
 	auto& socket = connection.getSocket();
 
-	p << type;
-
 	socket.send(p);
+}
+
+void NetworkServer::broadcast(sf::Packet& p) {
+	for(ClientConnection::Pointer& c : connectionStack.getConnections()) {
+		spdlog::debug("Sending packet to ID [{}]", c->getId());
+		send(c->getId(), p);
+	}
+}
+
+void NetworkServer::broadcastExcept(ClientConnection::ID excludeId, sf::Packet& p) {
+	for(ClientConnection::Pointer& c : connectionStack.getConnections()) {
+		ClientConnection::ID currentId = c->getId();
+
+		if(currentId == excludeId)
+			continue;
+
+		spdlog::debug("Sending packet to ID [{}]", currentId);
+		send(currentId, p);
+	}
 }
 
 void NetworkServer::disconnectClient(ClientConnection::ID id) {
@@ -93,7 +123,7 @@ void NetworkServer::disconnectClient(ClientConnection::ID id) {
 	auto& socket = connection.getSocket();
 
 	// !! don't change order :)
-	bus.emit<C2SDisconnection>(id);
+	EventBus::emit<C2SDisconnection>(id);
 	selector.remove(socket);
 	socket.disconnect();
 	connectionStack.remove(id);

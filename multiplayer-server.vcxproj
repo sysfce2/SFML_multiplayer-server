@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\multiplayer-zelda-clone\EventBus.cpp" />
     <ClCompile Include="NetworkServer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketProcessor.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Events.hpp" />
     <ClInclude Include="EventBus.hpp" />
     <ClInclude Include="IEventListener.hpp" />
+    <ClInclude Include="PacketBuilder.hpp" />
     <ClInclude Include="PacketProcessor.hpp" />
     <ClInclude Include="PacketType.hpp" />
     <ClInclude Include="PingListener.hpp" />

@@ -1,15 +1,13 @@
 #include "PacketProcessor.hpp"
 
-
-// https://stackoverflow.com/questions/60086331/throw-exception-on-missing-function-overload-with-stdvariant-instead-of-compil
-void PacketProcessor::process(sf::Packet& packet, ClientConnection::ID id, EventBus& bus) {
+void PacketProcessor::process(sf::Packet& packet, ClientConnection::ID id) {
 	PacketType type;
 	packet >> type;
 
 	switch(type)
 	{
-		case PacketType::C2S_PINGPACKET:
-			bus.emit<C2SPingPacket>(id, packet);
+		case PacketType::C2S_PING:
+			EventBus::emit<C2SPingPacket>(id, packet);
 			break;
 
 		default:

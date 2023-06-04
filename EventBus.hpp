@@ -4,10 +4,9 @@
 #include "Events.hpp"
 #include "IEventListener.hpp"
 
-class EventBus {
-private:
-	std::list<IEventListener::Pointer> listeners;
-public:
+namespace EventBus {
+	extern std::list<IEventListener::Pointer> listeners;
+
 	template<typename Event, typename... Args>
 	void emit(Args&&... args) {
 		for(auto& listener : listeners)
@@ -19,4 +18,4 @@ public:
 		auto listener = std::make_unique<ListenerT>(std::forward<Args>(args)...);
 		listeners.push_back(std::move(listener));
 	}
-};
+}

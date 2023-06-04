@@ -8,5 +8,5 @@
 
 class PacketProcessor {
 public:
-	void process(sf::Packet& packet, ClientConnection::ID id, EventBus& bus);
+	void process(sf::Packet& packet, ClientConnection::ID id);
 };

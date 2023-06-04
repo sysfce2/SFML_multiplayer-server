@@ -4,26 +4,23 @@
 #include "NetworkServer.hpp"
 #include "ConnectionStack.hpp"
 
-// TODO: pensa se lasciare delle cose condivise tra server e client o separarle (pur ricopiandole per ora)
-// magari crea uno shared items progetto su visual studio e metti solo gli enum in comune, però lasciamo le dichiarazioni e definizioni delle cose separate per i progetti
-// (anche se per ora sono uguali)
-// ed aggiungere anche zlib per compressione pacchetti
+// TODO: fixa read access violation quando un client si disconnette dal server (?)
+// SE PIU PLAYER ESCONO INSIEME CRAASHA!
 
 int main() {
-	EventBus bus;
 	ConnectionStack connectionStack(20);
-	NetworkServer server(connectionStack, bus, 39964);
+	NetworkServer server(connectionStack, 39964);
 
 	spdlog::set_level(spdlog::level::debug);
 
-	bus.registerListener<PingListener>(server);
+	EventBus::registerListener<PingListener>(server);
 
 	sf::Clock clock;
 	while(true) {
 		sf::Time dt = clock.restart();
 
 		server.poll();
-		bus.emit<S2STick>(dt);
+		EventBus::emit<S2STick>(dt);
 	}
 
 	return 0;
