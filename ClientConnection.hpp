@@ -8,7 +8,7 @@ public:
 	using ID = sf::Uint32;
 	using Pointer = std::unique_ptr<ClientConnection>;
 private:
-	static ID connectionCount;
+	static inline ID connectionCount = 0;
 
 	sf::TcpSocket socket;
 	ClientConnection::ID id;

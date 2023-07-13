@@ -4,9 +4,6 @@
 #include "NetworkServer.hpp"
 #include "ConnectionStack.hpp"
 
-// TODO: fixa read access violation quando un client si disconnette dal server (?)
-// SE PIU PLAYER ESCONO INSIEME CRAASHA!
-
 int main() {
 	ConnectionStack connectionStack(20);
 	NetworkServer server(connectionStack, 39964);

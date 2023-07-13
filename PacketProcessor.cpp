@@ -1,4 +1,5 @@
 #include "PacketProcessor.hpp"
+#include <spdlog/spdlog.h>
 
 void PacketProcessor::process(sf::Packet& packet, ClientConnection::ID id) {
 	PacketType type;

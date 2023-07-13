@@ -18,21 +18,27 @@ NetworkServer::NetworkServer(ConnectionStack& connectionStack, const int port)
 }
 
 void NetworkServer::poll() {
-	if(selector.wait(sf::seconds(0.016f))) {
+	if(selector.wait(sf::seconds(1.0f))) {
 		processNewConnections();
 		processIncomingPackets();
 	}
 }
 
 void NetworkServer::processIncomingPackets() {
-	for(auto& connection : connectionStack.getConnections()) {
-		ClientConnection::ID connectionId	= connection->getId();
-		sf::TcpSocket&	socket				= connection->getSocket();
+	auto& connections = connectionStack.getConnections();
+
+	for(auto it = connections.begin(); it != connections.end();) {
+		auto connection = it->get();
+
+		ClientConnection::ID connectionId = connection->getId();
+		sf::TcpSocket& socket = connection->getSocket();
 
 		if(!selector.isReady(socket))
 			return;
 
 		sf::Packet p;
+		bool hasClientDisconnected = false;
+
 		switch(socket.receive(p)) {
 			case sf::Socket::Done:
 				// first, emit general "packet received" event
@@ -43,7 +49,8 @@ void NetworkServer::processIncomingPackets() {
 				break;
 
 			case sf::Socket::Disconnected:
-				disconnectClient(connectionId);
+				hasClientDisconnected = true;
+				disconnectClient(connectionId, false);
 				spdlog::info("A client has disconnected.");
 				break;
 
@@ -51,6 +58,8 @@ void NetworkServer::processIncomingPackets() {
 				spdlog::error("A packet has been received, but it has an unhandled SFML state!");
 				break;
 		}
+
+		it = hasClientDisconnected ? connections.erase(it) : ++it;
 	}
 }
 
@@ -96,6 +105,7 @@ void NetworkServer::send(ClientConnection::ID id, sf::Packet& p) {
 	auto& connection = connectionStack.getConnection(id);
 	auto& socket = connection.getSocket();
 
+	spdlog::debug("Sending packet to ID [{}]", id);
 	socket.send(p);
 }
 
@@ -113,18 +123,18 @@ void NetworkServer::broadcastExcept(ClientConnection::ID excludeId, sf::Packet& 
 		if(currentId == excludeId)
 			continue;
 
-		spdlog::debug("Sending packet to ID [{}]", currentId);
+		spdlog::debug("Sending packet to ID [{}] except [{}]", currentId, excludeId);
 		send(currentId, p);
 	}
 }
 
-void NetworkServer::disconnectClient(ClientConnection::ID id) {
+void NetworkServer::disconnectClient(ClientConnection::ID id, bool removeFromConnections) {
 	auto& connection = connectionStack.getConnection(id);
 	auto& socket = connection.getSocket();
 
-	// !! don't change order :)
 	EventBus::emit<C2SDisconnection>(id);
 	selector.remove(socket);
-	socket.disconnect();
-	connectionStack.remove(id);
+
+	if(removeFromConnections)
+		connectionStack.remove(id);
 }

@@ -5,11 +5,11 @@
 
 class PingListener : public IEventListener {
 private:
-	using TimeInterval = sf::Int32;
-	const float MAX_NO_REPLY_TIME_MS = 10000;
+	using DeltaTime = sf::Int32;
+	const float MAX_NO_REPLY_TIME_MS = 5000;
 private:
 	NetworkServer& server;
-	std::unordered_map<ClientConnection::ID, TimeInterval> pings;
+	std::unordered_map<ClientConnection::ID, DeltaTime> pings;
 public:
 	PingListener(NetworkServer& server) : server(server) {};
 public:

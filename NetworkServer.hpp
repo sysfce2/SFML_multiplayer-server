@@ -23,7 +23,7 @@ public:
 	void send(ClientConnection::ID id, sf::Packet& p);
 	void broadcast(sf::Packet& p);
 	void broadcastExcept(ClientConnection::ID id, sf::Packet& p);
-	void disconnectClient(ClientConnection::ID id);
+	void disconnectClient(ClientConnection::ID id, bool removeFromConnections = true);
 private:
 	void processNewConnections();
 	void processIncomingPackets();

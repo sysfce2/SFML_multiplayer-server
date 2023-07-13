@@ -12,10 +12,9 @@ void ConnectionStack::add(ClientConnection::Pointer connection) {
 
 void ConnectionStack::remove(ClientConnection::ID id) {
 	spdlog::debug("Socket with ID: {} has been removed from the socket stack.", id);
-	connections.erase(std::remove_if(connections.begin(), connections.end(), [id](auto& s) { return id == s->getId(); }), connections.end());
+	std::erase_if(connections, [id](auto& s) { return id == s->getId(); });
 }
 
-// TODO: maybe use std::optional<SocketWrapper&> as return type
 ClientConnection& ConnectionStack::getConnection(ClientConnection::ID id) {
 	for(auto& connection : connections)
 		if(connection->getId() == id)
