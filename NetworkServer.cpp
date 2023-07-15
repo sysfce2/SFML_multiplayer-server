@@ -8,7 +8,7 @@ NetworkServer::NetworkServer(ConnectionStack& connectionStack, const int port)
 	: port(port), connectionStack(connectionStack), packetProcessor() {
 	// setup listener
 	if(tcpListener.listen(port) != sf::Socket::Done) {
-		spdlog::error("Cannot listen on port {}: listener is not ready.", port);
+		spdlog::error("Cannot listen on port {}: is a listener already attached?", port);
 		return;
 	}
 
@@ -101,6 +101,7 @@ void NetworkServer::broadcastNewConnection(ClientConnection::ID id) {
 	broadcastExcept(id, p);
 }
 
+// TODO: make a networkpacket sf::packet wrapper with packettype as m variable
 void NetworkServer::send(ClientConnection::ID id, sf::Packet& p) {
 	auto& connection = connectionStack.getConnection(id);
 	auto& socket = connection.getSocket();
@@ -110,10 +111,8 @@ void NetworkServer::send(ClientConnection::ID id, sf::Packet& p) {
 }
 
 void NetworkServer::broadcast(sf::Packet& p) {
-	for(ClientConnection::Pointer& c : connectionStack.getConnections()) {
-		spdlog::debug("Sending packet to ID [{}]", c->getId());
+	for(ClientConnection::Pointer& c : connectionStack.getConnections())
 		send(c->getId(), p);
-	}
 }
 
 void NetworkServer::broadcastExcept(ClientConnection::ID excludeId, sf::Packet& p) {
@@ -123,9 +122,12 @@ void NetworkServer::broadcastExcept(ClientConnection::ID excludeId, sf::Packet& 
 		if(currentId == excludeId)
 			continue;
 
-		spdlog::debug("Sending packet to ID [{}] except [{}]", currentId, excludeId);
 		send(currentId, p);
 	}
+}
+
+void NetworkServer::disconnectClient(ClientConnection::ID id) {
+	disconnectClient(id, true);
 }
 
 void NetworkServer::disconnectClient(ClientConnection::ID id, bool removeFromConnections) {

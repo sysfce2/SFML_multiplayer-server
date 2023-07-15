@@ -23,9 +23,10 @@ public:
 	void send(ClientConnection::ID id, sf::Packet& p);
 	void broadcast(sf::Packet& p);
 	void broadcastExcept(ClientConnection::ID id, sf::Packet& p);
-	void disconnectClient(ClientConnection::ID id, bool removeFromConnections = true);
+	void disconnectClient(ClientConnection::ID id);
 private:
 	void processNewConnections();
 	void processIncomingPackets();
 	void broadcastNewConnection(ClientConnection::ID id);
+	void disconnectClient(ClientConnection::ID id, bool removeFromConnections);
 };

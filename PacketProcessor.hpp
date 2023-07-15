@@ -6,6 +6,8 @@
 #include "PacketType.hpp"
 #include "ClientConnection.hpp"
 
+// TODO: Make this namespace
+// also check if other classes can be namespace'd
 class PacketProcessor {
 public:
 	void process(sf::Packet& packet, ClientConnection::ID id);

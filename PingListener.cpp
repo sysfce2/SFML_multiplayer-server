@@ -22,14 +22,10 @@ void PingListener::handle(S2STick e) {
 	auto elapsed = e.dt.asMilliseconds();
 
 	for(auto it = pings.begin(); it != pings.end();) {
-		const auto id = it->first;
-		auto& time = it->second;
+		auto& time			= it->second;
+		const auto id		= it->first;
 
 		time += elapsed;
-		spdlog::debug("------ CONNECTION {} ------", id);
-		spdlog::debug("adding \"{}\" to id \"{}\"", elapsed, id);
-		spdlog::debug("new time is \"{}\"", time);
-		spdlog::debug("pings size is {}", pings.size());
 
 		if(time >= MAX_NO_REPLY_TIME_MS) {
 			spdlog::info("Lost connection with client {}.", id);
