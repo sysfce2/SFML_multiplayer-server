@@ -1,6 +1,6 @@
 #include <spdlog/spdlog.h>
 #include "EventBus.hpp"
-#include "PingListener.hpp"
+#include "HeartbeatListener.hpp"
 #include "NetworkServer.hpp"
 #include "ConnectionStack.hpp"
 
@@ -10,14 +10,14 @@ int main() {
 
 	spdlog::set_level(spdlog::level::debug);
 
-	EventBus::registerListener<PingListener>(server);
+	EventBus::registerListener<HeartbeatListener>(server);
 
 	sf::Clock clock;
 	while(true) {
 		sf::Time dt = clock.restart();
 
 		server.poll();
-		EventBus::emit<S2STick>(dt);
+		EventBus::emit<S2STick>(dt.asSeconds());
 	}
 
 	return 0;

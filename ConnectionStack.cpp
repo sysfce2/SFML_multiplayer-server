@@ -6,12 +6,12 @@ ConnectionStack::ConnectionStack(const size_t maxConnections) : maxConnections(m
 }
 
 void ConnectionStack::add(ClientConnection::Pointer connection) {
-	spdlog::debug("Socket with ID: {} has been added to the socket stack.", connection->getId());
+	spdlog::debug("Socket with ID: {} has been added to the socket stack", connection->getId());
 	connections.push_back(std::move(connection));
 }
 
 void ConnectionStack::remove(ClientConnection::ID id) {
-	spdlog::debug("Socket with ID: {} has been removed from the socket stack.", id);
+	spdlog::debug("Socket with ID: {} has been removed from the socket stack", id);
 	std::erase_if(connections, [id](auto& s) { return id == s->getId(); });
 }
 

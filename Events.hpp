@@ -2,7 +2,7 @@
 #include "ClientConnection.hpp"
 
 struct S2STick {
-	sf::Time dt;
+	float dt;
 };
 
 struct C2SConnection {
@@ -23,7 +23,7 @@ struct C2SPacketPreprocess {
 	sf::Packet& packet;
 };
 
-struct C2SPingPacket {
+struct C2SHeartbeatPacket {
 	ClientConnection::ID connectionId;
 	sf::Packet& packet;
 };

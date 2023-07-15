@@ -145,7 +145,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketProcessor.cpp" />
     <ClCompile Include="PacketType.cpp" />
-    <ClCompile Include="PingListener.cpp" />
+    <ClCompile Include="HeartbeatListener.cpp" />
     <ClCompile Include="ClientConnection.cpp" />
     <ClCompile Include="ConnectionStack.cpp" />
   </ItemGroup>
@@ -157,7 +157,7 @@
     <ClInclude Include="PacketBuilder.hpp" />
     <ClInclude Include="PacketProcessor.hpp" />
     <ClInclude Include="PacketType.hpp" />
-    <ClInclude Include="PingListener.hpp" />
+    <ClInclude Include="HeartbeatListener.hpp" />
     <ClInclude Include="ClientConnection.hpp" />
     <ClInclude Include="ConnectionStack.hpp" />
   </ItemGroup>

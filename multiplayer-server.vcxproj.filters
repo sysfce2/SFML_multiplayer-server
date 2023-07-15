@@ -45,7 +45,7 @@
     <ClCompile Include="ClientConnection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PingListener.cpp">
+    <ClCompile Include="HeartbeatListener.cpp">
       <Filter>Source Files\events\listeners</Filter>
     </ClCompile>
     <ClCompile Include="PacketType.cpp">
@@ -68,7 +68,7 @@
     <ClInclude Include="NetworkServer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PingListener.hpp">
+    <ClInclude Include="HeartbeatListener.hpp">
       <Filter>Header Files\events\listeners</Filter>
     </ClInclude>
     <ClInclude Include="EventBus.hpp">

@@ -9,8 +9,6 @@
 class NetworkServer {
 private:
 	const int port;
-
-	PacketProcessor packetProcessor;
 	ConnectionStack& connectionStack;
 
 	sf::TcpListener tcpListener;

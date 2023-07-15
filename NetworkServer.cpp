@@ -5,16 +5,16 @@
 
 
 NetworkServer::NetworkServer(ConnectionStack& connectionStack, const int port)
-	: port(port), connectionStack(connectionStack), packetProcessor() {
+	: port(port), connectionStack(connectionStack) {
 	// setup listener
 	if(tcpListener.listen(port) != sf::Socket::Done) {
-		spdlog::error("Cannot listen on port {}: is a listener already attached?", port);
+		spdlog::error("Cannot listen on port {}! Is a listener already attached?", port);
 		return;
 	}
 
 	selector.add(tcpListener);
 	
-	spdlog::info("Correctly setup listener on port {}.", port);
+	spdlog::info("Listener was successfully setup on port {}", port);
 }
 
 void NetworkServer::poll() {
@@ -40,22 +40,23 @@ void NetworkServer::processIncomingPackets() {
 		bool hasClientDisconnected = false;
 
 		switch(socket.receive(p)) {
-			case sf::Socket::Done:
+			case sf::Socket::Done: {
 				// first, emit general "packet received" event
 				EventBus::emit<C2SPacketPreprocess>(connectionId, p);
 				// then, process the packet and emit correct, specific event
-				packetProcessor.process(p, connectionId);
-				spdlog::debug("A new packet has been received.");
+				PacketType t = PacketProcessor::process(p, connectionId);
+				spdlog::debug("A client [ID: {}] sent packet [TYPE: {}]", connectionId, static_cast<int>(t));
 				break;
+			}
 
 			case sf::Socket::Disconnected:
 				hasClientDisconnected = true;
 				disconnectClient(connectionId, false);
-				spdlog::info("A client has disconnected.");
+				spdlog::info("A client [ID: {}] has disconnected", connectionId);
 				break;
 
 			default:
-				spdlog::error("A packet has been received, but it has an unhandled SFML state!");
+				spdlog::error("A client [ID: {}] tried sending a packet, but an error occurred while receiving!");
 				break;
 		}
 
@@ -68,7 +69,7 @@ void NetworkServer::processNewConnections() {
 		return;
 
 	if(connectionStack.size() >= connectionStack.maxSize()) {
-		spdlog::warn("Maximum number of sockets has been reached. Closing new connection.");
+		spdlog::warn("Maximum number of clients has been reached. Closing new connection");
 		return;
 	}
 
@@ -77,7 +78,7 @@ void NetworkServer::processNewConnections() {
 	sf::TcpSocket& socket						= connection->getSocket();
 
 	if(tcpListener.accept(socket) != sf::Socket::Done) {
-		spdlog::error("Something went wrong while trying to accept a new connection!");
+		spdlog::error("Something went wrong while trying to accept new connection!");
 		return;
 	}
 
@@ -86,28 +87,30 @@ void NetworkServer::processNewConnections() {
 	connectionStack.add(std::move(connection));
 	EventBus::emit<C2SConnection>(connectionId);
 
-	spdlog::info("A new connection has been stored correctly.");
+	spdlog::info("A client [ID: {}] has connected successfully", connectionId);
 
 	// broadcast new connection
+	spdlog::debug("Broadcasting new connection [ID: {}] to connected clients", connectionId);
 	broadcastNewConnection(connectionId);
-	spdlog::debug("Broadcasting new connection to connected clients.");
 }
 
 void NetworkServer::broadcastNewConnection(ClientConnection::ID id) {
-	sf::Packet p = PacketBuilder::build(PacketType::S2C_NEW_CLIENT);
-
 	// TODO implement packet
+	sf::Packet p = PacketBuilder::build(PacketType::S2C_NEW_CLIENT);
 
 	broadcastExcept(id, p);
 }
 
-// TODO: make a networkpacket sf::packet wrapper with packettype as m variable
 void NetworkServer::send(ClientConnection::ID id, sf::Packet& p) {
 	auto& connection = connectionStack.getConnection(id);
 	auto& socket = connection.getSocket();
 
 	spdlog::debug("Sending packet to ID [{}]", id);
-	socket.send(p);
+
+	auto status = socket.send(p);
+
+	if(status != sf::Socket::Done)
+		spdlog::error("A client [ID: {}] returned code [{}] after packet was sent!", id, static_cast<int>(status));
 }
 
 void NetworkServer::broadcast(sf::Packet& p) {
